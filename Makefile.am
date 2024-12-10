@@ -1,5 +1,8 @@
 bin_PROGRAMS = FuncA
 FuncA_SOURCES = main.cpp FuncA.cpp
+check_PROGRAMS = test
+test_SOURCES = test.cpp FuncA.cpp
+
 
 install-exec-hook:
 	mkdir -p $(DESTDIR)/deb/DEBIAN
