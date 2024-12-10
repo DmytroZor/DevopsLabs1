@@ -1,19 +1,20 @@
-name: Tarball
+name: DebianPackage
 
 on:
   push:
     branches:
-      - branchAutomake
+      - branchAutoPackage
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build Tarball
+      - name: Build DebianPackage
         run: |
-          ./configure
-          make dist
+          ./configure --prefix=/
+          make install DESTDIR=$(pwd)
+          dpkg-deb --build deb
          
 
 

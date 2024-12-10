@@ -1,0 +1,7 @@
+Package: sin-func
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: any
+Maintainer: Zorenko Dmytro zorenkodmytro03@gmail.com
+Description: Calculate sin Function
