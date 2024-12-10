@@ -1,5 +1,5 @@
 #include "Func.h"
-#include <cmath>
+#include <cmath> // for pow() and factorial()
 
 double factorial(int num) {
     double result = 1;
@@ -19,7 +19,4 @@ double Func::FuncA(double x, int n) {
     }
     return sum;
 }
-
-
-
 
