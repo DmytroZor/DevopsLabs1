@@ -1,5 +1,5 @@
 #include <iostream>
-#include "func.h"
+#include "Func.h"
 
 int main() {
     Func func;

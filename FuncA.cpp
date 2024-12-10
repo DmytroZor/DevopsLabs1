@@ -1,7 +1,25 @@
-#include "func.h"
+#include "Func.h"
+#include <cmath>
 
-// Initial implementation: Returns 0
-double Func::FuncA() {
-    return 0;
+// Helper function to calculate factorial
+double factorial(int num) {
+    double result = 1;
+    for (int i = 1; i <= num; ++i) {
+        result *= i;
+    }
+    return result;
 }
+
+// Implementation of FuncA using the first 3 terms of the Taylor series
+double Func::FuncA(double x, int n = 3) {
+    double sum = 0;
+    for (int i = 0; i < n; ++i) {
+        int power = 2 * i + 1;
+        double term = pow(-1, i) * pow(x, power) / factorial(power);
+        sum += term;
+    }
+    return sum;
+}
+
+
 
