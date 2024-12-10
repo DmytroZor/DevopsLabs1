@@ -1,9 +1,13 @@
 #include <iostream>
-#include "Func.h"
+#include "FuncA.h"
 
 int main() {
     Func func;
-    std::cout << "FuncA result: " << func.FuncA() << std::endl;
+  
+    double x = 3.14; 
+    int n = 5;  
+
+    std::cout << "FuncA result: " << func.FuncA(x, n) << std::endl;
     return 0;
 }
 

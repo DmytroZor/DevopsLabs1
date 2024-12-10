@@ -1,4 +1,4 @@
-#include "Func.h"
+#include "FuncA.h"
 #include <cmath>
 
 double factorial(int num) {
