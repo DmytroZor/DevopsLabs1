@@ -1,17 +1,17 @@
-name: Build
+name: Tarball
 
 on:
   push:
     branches:
-      - branchMake
+      - branchAutomake
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build with Makefile
+      - name: Build Tarball
         run: |
-          make
+          make dist
 
 
