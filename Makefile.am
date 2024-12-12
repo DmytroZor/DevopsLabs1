@@ -20,12 +20,11 @@ install-exec-hook:
 EXTRA_DIST = Dockerfile
 dockerfile:
 	echo "FROM debian:bullseye-slim AS build" > Dockerfile
-	echo "RUN apt-get update && apt-get install -y g++ make git autoconf" >> Dockerfile
+	echo "RUN apt-get update && apt-get install -y g++ git" >> Dockerfile
 	echo "WORKDIR /app" >> Dockerfile
 	echo "RUN git clone https://github.com/DmytroZor/DevopsLabs1.git ." >> Dockerfile
 	echo "RUN git checkout branchHTTPserver" >> Dockerfile
-	echo "RUN make clean || true" >> Dockerfile
-	echo "RUN autoreconf -i && ./configure --host=$(uname -m) && make" >> Dockerfile
+	echo "RUN g++ -o HTTPserver HTTPserver.cpp FuncA.cpp -lpthread" >> Dockerfile
 	echo "FROM alpine:latest" >> Dockerfile
 	echo "RUN apk add --no-cache libstdc++" >> Dockerfile
 	echo "COPY --from=build /app/HTTPserver /app/HTTPserver" >> Dockerfile
