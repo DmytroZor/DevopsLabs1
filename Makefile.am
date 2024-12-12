@@ -24,8 +24,8 @@ dockerfile:
 	echo "WORKDIR /app" >> Dockerfile
 	echo "RUN git clone https://github.com/DmytroZor/DevopsLabs1.git ." >> Dockerfile
 	echo "RUN git checkout branchHTTPserver" >> Dockerfile
-	echo "RUN autoreconf -i && ./configure" >> Dockerfile
-	echo "RUN make" >> Dockerfile
+	echo "RUN make clean || true" >> Dockerfile
+	echo "RUN autoreconf -i && ./configure --host=$(uname -m) && make" >> Dockerfile
 	echo "FROM alpine:latest" >> Dockerfile
 	echo "RUN apk add --no-cache libstdc++" >> Dockerfile
 	echo "COPY --from=build /app/HTTPserver /app/HTTPserver" >> Dockerfile
