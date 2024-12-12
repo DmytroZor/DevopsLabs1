@@ -19,10 +19,10 @@ jobs:
           platforms: all
 
       - name: Build and configure project
-         run: |
-           autoreconf -i
-           ./configure
-           make
+        run: |
+          autoreconf -i
+          ./configure
+          make
 
       - name: Log in to DockerHub
         env:
