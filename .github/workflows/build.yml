@@ -1,19 +1,28 @@
-name: Docker
+name: Multi-Arch Docker
 
 on:
   push:
     branches:
-      - branchHTTPserver
+      - branchHTTPserverMutli
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Build Dockerfile
-        run: |
-          ./configure
-          make
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
+      - name: Build and configure project
+         run: |
+           autoreconf -i
+           ./configure
+           make
 
       - name: Log in to DockerHub
         env:
@@ -21,11 +30,13 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 
-      - name: docker build and push
-        run: |
-          docker build -t httpserver .
-          docker tag httpserver zorenkod/httpserver:latest
-          docker push zorenkod/httpserver:latest
+      - name: Build and Push Multi-Arch Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: zorenkod/httpserver:latest
+          platforms: linux/amd64,linux/arm64
 
          
 
