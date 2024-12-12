@@ -20,7 +20,7 @@ install-exec-hook:
 EXTRA_DIST = Dockerfile
 dockerfile:
 	echo "FROM debian:bullseye-slim AS build" > Dockerfile
-	echo "RUN apt-get update && apt-get install -y g++ make git" >> Dockerfile
+	echo "RUN apt-get update && apt-get install -y g++ make git autoconf" >> Dockerfile
 	echo "WORKDIR /app" >> Dockerfile
 	echo "RUN git clone https://github.com/DmytroZor/DevopsLabs1.git ." >> Dockerfile
 	echo "RUN git checkout branchHTTPserver" >> Dockerfile
