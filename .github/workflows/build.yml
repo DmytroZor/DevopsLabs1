@@ -3,7 +3,7 @@ name: Multi-Arch Docker
 on:
   push:
     branches:
-      - branchHTTPserverMutli
+      - branchHTTPserverMulti
 
 jobs:
   build-and-push:
