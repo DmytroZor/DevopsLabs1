@@ -86,8 +86,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = FuncA$(EXEEXT)
-check_PROGRAMS = test$(EXEEXT)
+bin_PROGRAMS = FuncA$(EXEEXT) HTTPserver$(EXEEXT)
+check_PROGRAMS = test$(EXEEXT) ServerTest$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -105,6 +105,12 @@ PROGRAMS = $(bin_PROGRAMS)
 am_FuncA_OBJECTS = main.$(OBJEXT) FuncA.$(OBJEXT)
 FuncA_OBJECTS = $(am_FuncA_OBJECTS)
 FuncA_LDADD = $(LDADD)
+am_HTTPserver_OBJECTS = HTTPserver.$(OBJEXT) FuncA.$(OBJEXT)
+HTTPserver_OBJECTS = $(am_HTTPserver_OBJECTS)
+HTTPserver_LDADD = $(LDADD)
+am_ServerTest_OBJECTS = ServerTest-ServerTest.$(OBJEXT)
+ServerTest_OBJECTS = $(am_ServerTest_OBJECTS)
+ServerTest_DEPENDENCIES =
 am_test_OBJECTS = test.$(OBJEXT) FuncA.$(OBJEXT)
 test_OBJECTS = $(am_test_OBJECTS)
 test_LDADD = $(LDADD)
@@ -123,9 +129,14 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/FuncA.Po ./$(DEPDIR)/main.Po \
+am__depfiles_remade = ./$(DEPDIR)/FuncA.Po ./$(DEPDIR)/HTTPserver.Po \
+	./$(DEPDIR)/ServerTest-ServerTest.Po ./$(DEPDIR)/main.Po \
 	./$(DEPDIR)/test.Po
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_@AM_V@)
@@ -139,8 +150,10 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(FuncA_SOURCES) $(test_SOURCES)
-DIST_SOURCES = $(FuncA_SOURCES) $(test_SOURCES)
+SOURCES = $(FuncA_SOURCES) $(HTTPserver_SOURCES) $(ServerTest_SOURCES) \
+	$(test_SOURCES)
+DIST_SOURCES = $(FuncA_SOURCES) $(HTTPserver_SOURCES) \
+	$(ServerTest_SOURCES) $(test_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -273,7 +286,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 FuncA_SOURCES = main.cpp FuncA.cpp
+ServerTest_SOURCES = ServerTest.cpp
+ServerTest_CPPFLAGS = -I/usr/include
+ServerTest_LDADD = -lcurl
 test_SOURCES = test.cpp FuncA.cpp
+HTTPserver_SOURCES = HTTPserver.cpp FuncA.cpp
+EXTRA_DIST = Dockerfile
 all: all-am
 
 .SUFFIXES:
@@ -361,6 +379,14 @@ FuncA$(EXEEXT): $(FuncA_OBJECTS) $(FuncA_DEPENDENCIES) $(EXTRA_FuncA_DEPENDENCIE
 	@rm -f FuncA$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(FuncA_OBJECTS) $(FuncA_LDADD) $(LIBS)
 
+HTTPserver$(EXEEXT): $(HTTPserver_OBJECTS) $(HTTPserver_DEPENDENCIES) $(EXTRA_HTTPserver_DEPENDENCIES) 
+	@rm -f HTTPserver$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(HTTPserver_OBJECTS) $(HTTPserver_LDADD) $(LIBS)
+
+ServerTest$(EXEEXT): $(ServerTest_OBJECTS) $(ServerTest_DEPENDENCIES) $(EXTRA_ServerTest_DEPENDENCIES) 
+	@rm -f ServerTest$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(ServerTest_OBJECTS) $(ServerTest_LDADD) $(LIBS)
+
 test$(EXEEXT): $(test_OBJECTS) $(test_DEPENDENCIES) $(EXTRA_test_DEPENDENCIES) 
 	@rm -f test$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(test_OBJECTS) $(test_LDADD) $(LIBS)
@@ -372,6 +398,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FuncA.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/HTTPserver.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ServerTest-ServerTest.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@ # am--include-marker
 
@@ -394,6 +422,20 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+ServerTest-ServerTest.o: ServerTest.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ServerTest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ServerTest-ServerTest.o -MD -MP -MF $(DEPDIR)/ServerTest-ServerTest.Tpo -c -o ServerTest-ServerTest.o `test -f 'ServerTest.cpp' || echo '$(srcdir)/'`ServerTest.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ServerTest-ServerTest.Tpo $(DEPDIR)/ServerTest-ServerTest.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ServerTest.cpp' object='ServerTest-ServerTest.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ServerTest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ServerTest-ServerTest.o `test -f 'ServerTest.cpp' || echo '$(srcdir)/'`ServerTest.cpp
+
+ServerTest-ServerTest.obj: ServerTest.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ServerTest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ServerTest-ServerTest.obj -MD -MP -MF $(DEPDIR)/ServerTest-ServerTest.Tpo -c -o ServerTest-ServerTest.obj `if test -f 'ServerTest.cpp'; then $(CYGPATH_W) 'ServerTest.cpp'; else $(CYGPATH_W) '$(srcdir)/ServerTest.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ServerTest-ServerTest.Tpo $(DEPDIR)/ServerTest-ServerTest.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ServerTest.cpp' object='ServerTest-ServerTest.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(ServerTest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ServerTest-ServerTest.obj `if test -f 'ServerTest.cpp'; then $(CYGPATH_W) 'ServerTest.cpp'; else $(CYGPATH_W) '$(srcdir)/ServerTest.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -671,6 +713,8 @@ clean-am: clean-binPROGRAMS clean-checkPROGRAMS clean-generic \
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 		-rm -f ./$(DEPDIR)/FuncA.Po
+	-rm -f ./$(DEPDIR)/HTTPserver.Po
+	-rm -f ./$(DEPDIR)/ServerTest-ServerTest.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/test.Po
 	-rm -f Makefile
@@ -722,6 +766,8 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
 		-rm -f ./$(DEPDIR)/FuncA.Po
+	-rm -f ./$(DEPDIR)/HTTPserver.Po
+	-rm -f ./$(DEPDIR)/ServerTest-ServerTest.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/test.Po
 	-rm -f Makefile
@@ -772,6 +818,15 @@ install-exec-hook:
 	echo "Architecture: any" >> $(DESTDIR)/deb/DEBIAN/control
 	echo "Maintainer: Zorenko Dmytro zorenkodmytro03@gmail.com" >> $(DESTDIR)/deb/DEBIAN/control
 	echo "Description: Calculate sin Function" >> $(DESTDIR)/deb/DEBIAN/control
+dockerfile:
+	 echo "FROM debian:bullseye-slim" > Dockerfile
+	 echo "RUN apt-get update && apt-get install -y g++ make">> Dockerfile
+	 echo "WORKDIR /app" >> Dockerfile
+	 echo "COPY . /app" >> Dockerfile
+	 echo "EXPOSE 8081" >> Dockerfile
+	 echo "CMD [\"./HTTPserver\"]" >> Dockerfile
+
+all: dockerfile
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

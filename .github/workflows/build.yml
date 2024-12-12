@@ -1,19 +1,32 @@
-name: AutoTest
+name: Docker
 
 on:
   push:
     branches:
-      - branchAutoTest
+      - branchHTTPserver
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build DebianPackage
+      - name: Build Dockerfile
         run: |
           ./configure
-          make check
+          make
+
+      - name: Log in to DockerHub
+         env:
+           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+         run: echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+
+      - name: docker build and push
+        run: |
+          docker build -t httpserver .
+          docker tag httpserver zorenkod/httpserver:latest
+          docker push zorenkod/httpserver:latest
+
          
 
 

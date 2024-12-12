@@ -1,0 +1,26 @@
+name: servertest
+
+on:
+  push:
+    branches:
+      - branchHTTPserver
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: download libs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+
+      - name: BuildTest
+        run: |
+          ./configure
+          make
+          make check
+
+         
+
+
