@@ -13,7 +13,7 @@ jobs:
       - name: download libs
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl
+          sudo apt-get install -y curl libcurl4-openssl-dev 
 
       - name: BuildTest
         run: |
