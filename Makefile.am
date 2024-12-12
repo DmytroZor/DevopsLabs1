@@ -23,7 +23,7 @@ dockerfile:
 	echo "RUN apt-get update && apt-get install -y g++ make git" >> Dockerfile
 	echo "WORKDIR /app" >> Dockerfile
 	echo "RUN git clone https://github.com/DmytroZor/DevopsLabs1.git ." >> Dockerfile
-	echo "RUN git checkout branchHTTTPserver" >> Dockerfile
+	echo "RUN git checkout branchHTTPserver" >> Dockerfile
 	echo "RUN autoreconf -i && ./configure" >> Dockerfile
 	echo "RUN make" >> Dockerfile
 	echo "FROM alpine:latest" >> Dockerfile
