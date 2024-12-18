@@ -1,6 +1,12 @@
-FROM debian:bullseye-slim
-RUN apt-get update && apt-get install -y g++ make
+FROM alpine:latest AS build
+RUN apk add --no-cache build-base automake autoconf
 WORKDIR /app
-COPY . /app
-EXPOSE 8081
-CMD ["./HTTPserver"]
+COPY . .
+RUN autoreconf --install
+RUN ./configure
+RUN make
+
+
+FROM alpine:latest
+COPY --from=build /app/HTTPserver /usr/local/bin/HTTPserver
+ENTRYPOINT ["/usr/local/bin/HTTPserver"]
