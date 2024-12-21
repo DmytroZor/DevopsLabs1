@@ -2,7 +2,7 @@
 
 # Function to send a single request
 send_request() {
-    curl http://localhost:8081/compute
+    curl -i -X GET 127.0.0.1/compute
     echo -e "\nRequest sent."
 }
 
