@@ -1,12 +1,12 @@
-FROM alpine:latest AS build
-RUN apk add --no-cache build-base automake autoconf
+FROM debian:bullseye-slim AS build
+RUN apt-get update && apt-get install -y g++ git
 WORKDIR /app
-COPY . .
-RUN autoreconf --install
-RUN ./configure
-RUN make
+RUN git clone https://github.com/DmytroZor/DevopsLabs1.git .
+RUN git checkout branchHTTPserver
 
-
-FROM alpine:latest
-COPY --from=build /app/HTTPserver /usr/local/bin/HTTPserver
-ENTRYPOINT ["/usr/local/bin/HTTPserver"]
+FROM alpine:latest 
+RUN apk add --no-cache libstdc++ libc6-compat
+WORKDIR /app
+COPY --from=build /app/HTTPserver .
+EXPOSE 8081
+CMD ["./HTTPserver"]

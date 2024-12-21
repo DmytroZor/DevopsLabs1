@@ -197,12 +197,12 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} '/home/ubuntu/DevopsLabs1/missing' aclocal-1.16
+ACLOCAL = ${SHELL} '/home/dmytrozor/Desktop/DevopsLabs1/missing' aclocal-1.16
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
-AUTOCONF = ${SHELL} '/home/ubuntu/DevopsLabs1/missing' autoconf
-AUTOHEADER = ${SHELL} '/home/ubuntu/DevopsLabs1/missing' autoheader
-AUTOMAKE = ${SHELL} '/home/ubuntu/DevopsLabs1/missing' automake-1.16
+AUTOCONF = ${SHELL} '/home/dmytrozor/Desktop/DevopsLabs1/missing' autoconf
+AUTOHEADER = ${SHELL} '/home/dmytrozor/Desktop/DevopsLabs1/missing' autoheader
+AUTOMAKE = ${SHELL} '/home/dmytrozor/Desktop/DevopsLabs1/missing' automake-1.16
 AWK = mawk
 CPPFLAGS = 
 CSCOPE = cscope
@@ -227,7 +227,7 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} '/home/ubuntu/DevopsLabs1/missing' makeinfo
+MAKEINFO = ${SHELL} '/home/dmytrozor/Desktop/DevopsLabs1/missing' makeinfo
 MKDIR_P = /usr/bin/mkdir -p
 OBJEXT = o
 PACKAGE = sin_func
@@ -242,10 +242,10 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = 
 VERSION = 1.0
-abs_builddir = /home/ubuntu/DevopsLabs1
-abs_srcdir = /home/ubuntu/DevopsLabs1
-abs_top_builddir = /home/ubuntu/DevopsLabs1
-abs_top_srcdir = /home/ubuntu/DevopsLabs1
+abs_builddir = /home/dmytrozor/Desktop/DevopsLabs1
+abs_srcdir = /home/dmytrozor/Desktop/DevopsLabs1
+abs_top_builddir = /home/dmytrozor/Desktop/DevopsLabs1
+abs_top_srcdir = /home/dmytrozor/Desktop/DevopsLabs1
 ac_ct_CXX = g++
 am__include = include
 am__leading_dot = .
@@ -264,7 +264,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/ubuntu/DevopsLabs1/install-sh
+install_sh = ${SHELL} /home/dmytrozor/Desktop/DevopsLabs1/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -819,12 +819,18 @@ install-exec-hook:
 	echo "Maintainer: Zorenko Dmytro zorenkodmytro03@gmail.com" >> $(DESTDIR)/deb/DEBIAN/control
 	echo "Description: Calculate sin Function" >> $(DESTDIR)/deb/DEBIAN/control
 dockerfile:
-	 echo "FROM debian:bullseye-slim" > Dockerfile
-	 echo "RUN apt-get update && apt-get install -y g++ make">> Dockerfile
-	 echo "WORKDIR /app" >> Dockerfile
-	 echo "COPY . /app" >> Dockerfile
-	 echo "EXPOSE 8081" >> Dockerfile
-	 echo "CMD [\"./HTTPserver\"]" >> Dockerfile
+	echo "FROM debian:bullseye-slim AS build" > Dockerfile
+	echo "RUN apt-get update && apt-get install -y g++ git" >> Dockerfile
+	echo "WORKDIR /app" >> Dockerfile
+	echo "RUN git clone https://github.com/DmytroZor/DevopsLabs1.git ." >> Dockerfile
+	echo "RUN git checkout branchHTTPserver" >> Dockerfile
+	echo "RUN g++ -o HTTPserver HTTPserver.cpp FuncA.cpp -lpthread" >> Dockerfile
+	echo "FROM alpine:latest" >> Dockerfile
+	echo "RUN apk add --no-cache libstdc++" >> Dockerfile
+	echo "COPY --from=build /app/HTTPserver /app/HTTPserver" >> Dockerfile
+	echo "WORKDIR /app" >> Dockerfile
+	echo "EXPOSE 8081" >> Dockerfile
+	echo 'CMD ["./HTTPserver"]' >> Dockerfile
 
 all: dockerfile
 
